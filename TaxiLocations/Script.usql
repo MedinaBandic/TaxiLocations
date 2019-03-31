@@ -1,0 +1,44 @@
+﻿@input =
+    EXTRACT TaxiID int,
+            Timestamp DateTime,
+            Lat double,
+            Lon double,
+            Speed double?,
+            Staying int?
+    FROM "/taxi_february_speeds.txt"
+    USING new TaxiLocations.TxtExtractor();
+
+@speedPartition = SELECT *, (int)(Speed / 10) * 10 AS SpeedPartition FROM @input WHERE Speed.HasValue;
+
+@min =
+    SELECT SpeedPartition AS Speed, COUNT() AS PointCount
+    FROM @speedPartition GROUP BY SpeedPartition;
+
+@avgs =
+    SELECT TaxiID, AVG(Speed) AS Average
+    FROM @input WHERE Speed.HasValue && Speed >= 10 GROUP BY TaxiID;
+    
+@byHours =
+    SELECT Timestamp.Hour AS Hour, COUNT() AS HourCount, AVG(Speed) AS AvgSpeed
+    FROM @input WHERE Staying.HasValue && Staying < 4 GROUP BY Timestamp.Hour;
+
+@byHoursStops =
+    SELECT Timestamp.Hour AS Hour, COUNT() AS HourCount, AVG(Speed) AS AvgSpeed
+    FROM @input WHERE Staying.HasValue && Staying >= 4 GROUP BY Timestamp.Hour;
+
+
+OUTPUT @min
+TO "/output.csv"
+USING Outputters.Csv(outputHeader : true);
+
+OUTPUT @avgs
+TO "/outputSpeed.csv"
+USING Outputters.Csv(outputHeader : true);
+
+OUTPUT @byHours
+TO "/outputHours.csv"
+USING Outputters.Csv(outputHeader : true);
+
+OUTPUT @byHoursStops
+TO "/outputHoursStops.csv"
+USING Outputters.Csv(outputHeader : true);

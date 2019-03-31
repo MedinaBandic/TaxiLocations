@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vertexCommand command="Start" jobType="None" managedMemorySize="0" vertexArg="ScopeEngine.dll -scopeVertex SV3_Process -vertexNumber 0">
+  <inputs>
+    <input name="SV1_Extract_Split_out1" path="C:\Users\ACER\documents\visual studio 2015\Projects\TaxiLocations\TaxiLocations\bin\Debug\F69E65693843FCCF\_Temp\Script.usql.Debug_AD0019887D2829B8\scopetmpfile._SV1_Extract_Split_out1" blockAligned="True" globalStartOffset="0" localStartOffset="0" localEndOffset="621032216" length="621032216" />
+  </inputs>
+  <outputs>
+    <output path="C:\Users\ACER\documents\visual studio 2015\Projects\TaxiLocations\TaxiLocations\bin\Debug\F69E65693843FCCF\_Temp\Script.usql.Debug_AD0019887D2829B8\scopetmpfile._SV3_Process_out0" />
+  </outputs>
+</vertexCommand>

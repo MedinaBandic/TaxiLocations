@@ -1,0 +1,7 @@
+c:\users\acer\documents\visual studio 2015\Projects\TaxiLocations\TaxiDataUtilities\bin\Debug\TaxiDataUtilities.pdb
+c:\users\acer\documents\visual studio 2015\Projects\TaxiLocations\TaxiDataUtilities\bin\Debug\Microsoft.Analytics.Interfaces.dll
+c:\users\acer\documents\visual studio 2015\Projects\TaxiLocations\TaxiDataUtilities\bin\Debug\Microsoft.Analytics.Types.dll
+c:\users\acer\documents\visual studio 2015\Projects\TaxiLocations\TaxiDataUtilities\obj\Debug\TaxiDataUtilities.pdb
+c:\users\acer\documents\visual studio 2015\Projects\TaxiLocations\TaxiDataUtilities\bin\Debug\TaxiDataUtilities.exe
+c:\users\acer\documents\visual studio 2015\Projects\TaxiLocations\TaxiDataUtilities\obj\Debug\TaxiDataUtilities.exe
+C:\Users\ACER\documents\visual studio 2015\Projects\TaxiLocations\TaxiDataUtilities\obj\Debug\TaxiDataUtilities.csprojResolveAssemblyReference.cache

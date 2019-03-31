@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CSSRelatedInfo>
+  <OptimizerPlanInfo signatureVersion="1">
+    <TableScan present="True" occurrence="1" />
+    <PartitionSeek present="False" occurrence="0" />
+    <PartitionRange present="False" occurrence="0" />
+    <IndexSeek present="False" occurrence="0" />
+    <IndexRange present="False" occurrence="0" />
+    <Join present="False" occurrence="0" />
+    <GroupByAgg present="True" occurrence="8" />
+    <UDProcessor present="False" occurrence="0" />
+    <UDReducer present="False" occurrence="0" />
+    <UDCombiner present="False" occurrence="0" />
+    <UDMultiProcessor present="False" occurrence="0" />
+    <Top present="False" occurrence="0" />
+    <Costs>
+      <ExtractCardinality>25989880,2424242</ExtractCardinality>
+      <InputSize>1715332096</InputSize>
+      <OutputCardinality>20791904,1939394</OutputCardinality>
+      <NumTable>1</NumTable>
+      <DataTransferVolume>0</DataTransferVolume>
+      <Latency>-1</Latency>
+      <TotalCost>-1</TotalCost>
+      <EstimatedNumEdges>0</EstimatedNumEdges>
+    </Costs>
+    <OptimizerTrees>
+<InputTree>
+    <LogOp Id="LogOp_Sequence">
+      <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+      <LogOp Id="LogOp_Output" Table="/output.csv" XMode="All" Out="Speed,PointCount" Udf="IOutputter">
+        <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+        <LogOp Id="LogOp_RestrRemap" Remove="SpeedPartition,PointCount,PointCount1" Remap="PointCount#PointCount1,Speed#SpeedPartition">
+          <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+          <LogOp Id="LogOp_Project">
+            <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+            <LogOp Id="LogOp_GbAgg" AggregateType="Normal" Out="PointCount,SpeedPartition" By="SpeedPartition">
+              <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+              <LogOp Id="LogOp_Project">
+                <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+                <LogOp Id="LogOp_Select">
+                  <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+                  <LogOp Id="LogOp_RestrRemap" Remove="TaxiID,Timestamp,Lat,Lon,Speed,Staying" Remap="Lat#Lat,Lon#Lon,Speed#Speed,Staying#Staying,TaxiID#TaxiID,Timestamp#Timestamp">
+                    <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+                    <LogOp Id="LogOp_Spool" Name="__SCOPE_PARAMETER_PREFIX__input" CSRoot="Common" TotalConsumers="4">
+                      <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+                      <LogOp Id="LogOp_Extract" Table="/taxi_february_speeds.txt" XMode="Parallel" PartitionType="Nil" Partitioning="" Partitions="2(EST)" Udf="TxtExtractor">
+                        <OpInfo><TableGroupProperties Grp="0.0" Remotable="False" Card="2.59899e+07" AvgRowLength="40"/></OpInfo>
+                      </LogOp>
+                    </LogOp>
+                  </LogOp>
+                  <ScaOp Id="ScaOp_Udf" Udf="Speed.HasValue" UsedColumn="Speed"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+                  </ScaOp>
+                </LogOp>
+                <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="7.0"/></OpInfo>
+                  <AncOp Id="AncOp_PrjEl" Column="SpeedPartition"><OpInfo><ScalarGroupProperties Grp="6.0"/></OpInfo>
+                    <ScaOp Id="ScaOp_Udf" Udf="(int)(Speed / 10) * 10" UsedColumn="Speed"><OpInfo><ScalarGroupProperties Grp="5.0"/></OpInfo>
+                    </ScaOp>
+                  </AncOp>
+                </AncOp>
+              </LogOp>
+              <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="12.0"/></OpInfo>
+                <AncOp Id="AncOp_PrjEl" Column="PointCount"><OpInfo><ScalarGroupProperties Grp="11.0"/></OpInfo>
+                  <ScaOp Id="ScaOp_AggFunc" AggregateName="stopCountBig" Distinct="False"><OpInfo><ScalarGroupProperties Grp="10.0"/></OpInfo>
+                    <ScaOp Id="ScaOp_Const" TI="Int" Value="1" Parameter="0"><OpInfo><ScalarGroupProperties Grp="9.0"/></OpInfo>
+                    </ScaOp>
+                  </ScaOp>
+                </AncOp>
+              </AncOp>
+            </LogOp>
+            <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="17.0"/></OpInfo>
+              <AncOp Id="AncOp_PrjEl" Column="PointCount1"><OpInfo><ScalarGroupProperties Grp="16.0"/></OpInfo>
+                <ScaOp Id="ScaOp_Convert"><OpInfo><ScalarGroupProperties Grp="15.0"/></OpInfo>
+                  <ScaOp Id="ScaOp_Identifier" Column="PointCount"><OpInfo><ScalarGroupProperties Grp="14.0"/></OpInfo>
+                  </ScaOp>
+                </ScaOp>
+              </AncOp>
+            </AncOp>
+          </LogOp>
+        </LogOp>
+      </LogOp>
+      <LogOp Id="LogOp_Output" Table="/outputSpeed.csv" XMode="All" Out="TaxiID,Average" Udf="IOutputter">
+        <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+        <LogOp Id="LogOp_GbAgg" AggregateType="Normal" Out="Average,TaxiID" By="TaxiID">
+          <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+          <LogOp Id="LogOp_Select">
+            <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+            <LogOp Id="LogOp_RestrRemap" Remove="TaxiID,Timestamp,Lat,Lon,Speed,Staying" Remap="Lat#Lat,Lon#Lon,Speed#Speed,Staying#Staying,TaxiID#TaxiID,Timestamp#Timestamp">
+              <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+              <LogOp Id="LogOp_Spool" Name="__SCOPE_PARAMETER_PREFIX__input" CSRoot="Common" TotalConsumers="4">
+                <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+              </LogOp>
+            </LogOp>
+            <ScaOp Id="ScaOp_Udf" Udf="Speed.HasValue &amp;&amp; Speed &gt;= 10" UsedColumn="Speed"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+            </ScaOp>
+          </LogOp>
+          <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+            <AncOp Id="AncOp_PrjEl" Column="Average"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+              <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAvg" Distinct="False"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+                <ScaOp Id="ScaOp_Identifier" Column="Speed"><OpInfo><ScalarGroupProperties Grp="76.0"/></OpInfo>
+                </ScaOp>
+              </ScaOp>
+            </AncOp>
+          </AncOp>
+        </LogOp>
+      </LogOp>
+      <LogOp Id="LogOp_Output" Table="/outputHours.csv" XMode="All" Out="Hour,HourCount,AvgSpeed" Udf="IOutputter">
+        <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+        <LogOp Id="LogOp_RestrRemap" Remove="Expr_0,HourCount,HourCount1" Remap="Hour#Expr_0,HourCount#HourCount1">
+          <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+          <LogOp Id="LogOp_Project">
+            <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+            <LogOp Id="LogOp_GbAgg" AggregateType="Normal" Out="HourCount,AvgSpeed,Expr_0" By="Expr_0">
+              <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+              <LogOp Id="LogOp_Project">
+                <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+                <LogOp Id="LogOp_Select">
+                  <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+                  <LogOp Id="LogOp_RestrRemap" Remove="TaxiID,Timestamp,Lat,Lon,Speed,Staying" Remap="Lat#Lat,Lon#Lon,Speed#Speed,Staying#Staying,TaxiID#TaxiID,Timestamp#Timestamp">
+                    <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+                    <LogOp Id="LogOp_Spool" Name="__SCOPE_PARAMETER_PREFIX__input" CSRoot="Common" TotalConsumers="4">
+                      <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+                    </LogOp>
+                  </LogOp>
+                  <ScaOp Id="ScaOp_Udf" Udf="Staying.HasValue &amp;&amp; Staying &lt; 4" UsedColumn="Staying"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+                  </ScaOp>
+                </LogOp>
+                <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="26.0"/></OpInfo>
+                  <AncOp Id="AncOp_PrjEl" Column="Expr_0"><OpInfo><ScalarGroupProperties Grp="25.0"/></OpInfo>
+                    <ScaOp Id="ScaOp_Udf" Udf="Timestamp.Hour" UsedColumn="Timestamp"><OpInfo><ScalarGroupProperties Grp="24.0"/></OpInfo>
+                    </ScaOp>
+                  </AncOp>
+                </AncOp>
+              </LogOp>
+              <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+                <AncOp Id="AncOp_PrjEl" Column="HourCount"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+                  <ScaOp Id="ScaOp_AggFunc" AggregateName="stopCountBig" Distinct="False"><OpInfo><ScalarGroupProperties Grp="10.0"/></OpInfo>
+                    <ScaOp Id="ScaOp_Const" TI="Int" Value="1" Parameter="0"><OpInfo><ScalarGroupProperties Grp="9.0"/></OpInfo>
+                    </ScaOp>
+                  </ScaOp>
+                </AncOp>
+                <AncOp Id="AncOp_PrjEl" Column="AvgSpeed"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+                  <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAvg" Distinct="False"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+                    <ScaOp Id="ScaOp_Identifier" Column="Speed"><OpInfo><ScalarGroupProperties Grp="29.0"/></OpInfo>
+                    </ScaOp>
+                  </ScaOp>
+                </AncOp>
+              </AncOp>
+            </LogOp>
+            <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="43.0"/></OpInfo>
+              <AncOp Id="AncOp_PrjEl" Column="HourCount1"><OpInfo><ScalarGroupProperties Grp="42.0"/></OpInfo>
+                <ScaOp Id="ScaOp_Convert"><OpInfo><ScalarGroupProperties Grp="41.0"/></OpInfo>
+                  <ScaOp Id="ScaOp_Identifier" Column="HourCount"><OpInfo><ScalarGroupProperties Grp="40.0"/></OpInfo>
+                  </ScaOp>
+                </ScaOp>
+              </AncOp>
+            </AncOp>
+          </LogOp>
+        </LogOp>
+      </LogOp>
+      <LogOp Id="LogOp_Output" Table="/outputHoursStops.csv" XMode="All" Out="Hour,HourCount,AvgSpeed" Udf="IOutputter">
+        <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+        <LogOp Id="LogOp_RestrRemap" Remove="Expr_0,HourCount,HourCount1" Remap="Hour#Expr_0,HourCount#HourCount1">
+          <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+          <LogOp Id="LogOp_Project">
+            <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+            <LogOp Id="LogOp_GbAgg" AggregateType="Normal" Out="HourCount,AvgSpeed,Expr_0" By="Expr_0">
+              <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+              <LogOp Id="LogOp_Project">
+                <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+                <LogOp Id="LogOp_Select">
+                  <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+                  <LogOp Id="LogOp_RestrRemap" Remove="TaxiID,Timestamp,Lat,Lon,Speed,Staying" Remap="Lat#Lat,Lon#Lon,Speed#Speed,Staying#Staying,TaxiID#TaxiID,Timestamp#Timestamp">
+                    <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+                    <LogOp Id="LogOp_Spool" Name="__SCOPE_PARAMETER_PREFIX__input" CSRoot="Common" TotalConsumers="4">
+                      <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+                    </LogOp>
+                  </LogOp>
+                  <ScaOp Id="ScaOp_Udf" Udf="Staying.HasValue &amp;&amp; Staying &gt;= 4" UsedColumn="Staying"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+                  </ScaOp>
+                </LogOp>
+                <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="52.0"/></OpInfo>
+                  <AncOp Id="AncOp_PrjEl" Column="Expr_0"><OpInfo><ScalarGroupProperties Grp="51.0"/></OpInfo>
+                    <ScaOp Id="ScaOp_Udf" Udf="Timestamp.Hour" UsedColumn="Timestamp"><OpInfo><ScalarGroupProperties Grp="50.0"/></OpInfo>
+                    </ScaOp>
+                  </AncOp>
+                </AncOp>
+              </LogOp>
+              <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+                <AncOp Id="AncOp_PrjEl" Column="HourCount"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+                  <ScaOp Id="ScaOp_AggFunc" AggregateName="stopCountBig" Distinct="False"><OpInfo><ScalarGroupProperties Grp="10.0"/></OpInfo>
+                    <ScaOp Id="ScaOp_Const" TI="Int" Value="1" Parameter="0"><OpInfo><ScalarGroupProperties Grp="9.0"/></OpInfo>
+                    </ScaOp>
+                  </ScaOp>
+                </AncOp>
+                <AncOp Id="AncOp_PrjEl" Column="AvgSpeed"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+                  <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAvg" Distinct="False"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+                    <ScaOp Id="ScaOp_Identifier" Column="Speed"><OpInfo><ScalarGroupProperties Grp="55.0"/></OpInfo>
+                    </ScaOp>
+                  </ScaOp>
+                </AncOp>
+              </AncOp>
+            </LogOp>
+            <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="69.0"/></OpInfo>
+              <AncOp Id="AncOp_PrjEl" Column="HourCount1"><OpInfo><ScalarGroupProperties Grp="68.0"/></OpInfo>
+                <ScaOp Id="ScaOp_Convert"><OpInfo><ScalarGroupProperties Grp="67.0"/></OpInfo>
+                  <ScaOp Id="ScaOp_Identifier" Column="HourCount"><OpInfo><ScalarGroupProperties Grp="66.0"/></OpInfo>
+                  </ScaOp>
+                </ScaOp>
+              </AncOp>
+            </AncOp>
+          </LogOp>
+        </LogOp>
+      </LogOp>
+    </LogOp>
+</InputTree>
+<OutputTree>
+    <PhyOp Id="PhyOp_Sequence">
+      <OpInfo><TableGroupProperties Grp="88.1" Remotable="False" Card="0" CardFromHint="True" AvgRowLength="1" PrtnSkewFactor="1" HT="300939368293395791:237::5:9302872053716269268" HTS="7379521910736817491"/><Costs TotalCosts="2282.83" BubbleCost="2282.83" BubblePartitions="396"/></OpInfo>
+      <PhyOp Id="PhyOp_Output" Table="/output.csv" XMode="Serial" Out="Speed,PointCount" Udf="IOutputter">
+        <OpInfo><TableGroupProperties Grp="20.1" Remotable="False" Card="5.19798e+06" AvgRowLength="12" PrtnSkewFactor="1" HT="17987518595994647517:228::6:16147095770748136434" HTS="8493045044402506491"/><Costs TotalCosts="1896.78" BubbleCost="1896.78" BubblePartitions="399"/></OpInfo>
+        <PhyOp Id="PhyOp_RestrRemap">
+          <OpInfo><TableGroupProperties Grp="19.1" Remotable="False" Card="5.19798e+06" AvgRowLength="12" PrtnSkewFactor="1" HT="16147095770748136434:120::5:2861914257799624879" HTS="1027364781615459725"/><Costs TotalCosts="1308.41" BubbleCost="1308.41" BubblePartitions="399"/></OpInfo>
+          <PhyOp Id="PhyOp_ComputeScalar">
+            <OpInfo><TableGroupProperties Grp="18.1" Remotable="False" Card="5.19798e+06" AvgRowLength="12" PrtnSkewFactor="1" HT="2861914257799624879:212::4:398810472006446874" HTS="8787119816610351974"/><Costs TotalCosts="1308.41" BubbleCost="1308.41" BubblePartitions="399"/></OpInfo>
+            <PhyOp Id="PhyOp_StreamGbAgg" AggregateType="Global" GroupOnly="False" On="SpeedPartition ASC" SortColumn="SpeedPartition ASC">
+              <OpInfo><TableGroupProperties Grp="13.2" Remotable="False" Card="5.19798e+06" AvgRowLength="12" PrtnSkewFactor="1" HT="7750068733056487669:109:0:4:5748659061317692301" HTS="12969889446124977721"/><Costs TotalCosts="1307.89" BubbleCost="1307.89" BubblePartitions="399"/></OpInfo>
+              <PhyOp Id="PhyOp_Sort" SortColumn="SpeedPartition ASC">
+                <OpInfo><TableGroupProperties Grp="91.2" Remotable="False" Card="1.0396e+07" AvgRowLength="12" PrtnSkewFactor="1" HT="7243873409608206988:109:1:4:77223327473741703" HTS="1046875154998101335"/><Costs TotalCosts="1305.01" BubbleCost="1305.01" BubblePartitions="399"/></OpInfo>
+                <PhyOp Id="PhyOp_HashGbAgg" AggregateType="Local" By="SpeedPartition">
+                  <OpInfo><TableGroupProperties Grp="91.3" Remotable="False" Card="1.0396e+07" AvgRowLength="12" PrtnSkewFactor="1" HT="7243873409608206988:109:1:4:77223327473741703" HTS="1046875154998101335"/><Costs TotalCosts="1289.08" BubbleCost="1289.08" BubblePartitions="399"/></OpInfo>
+                  <PhyOp Id="PhyOp_ComputeScalar">
+                    <OpInfo><TableGroupProperties Grp="8.3" Remotable="False" Card="2.07919e+07" AvgRowLength="4" PrtnSkewFactor="1" HT="16606221584732020227:212::3:3852322689772067677" HTS="16679972068436105577"/><Costs TotalCosts="1282.91" BubbleCost="1282.91" BubblePartitions="399"/></OpInfo>
+                    <PhyOp Id="PhyOp_RestrRemap">
+                      <OpInfo><TableGroupProperties Grp="4.1" Remotable="False" Card="2.07919e+07" AvgRowLength="8" PrtnSkewFactor="1" HT="17146271445892585783:120::2:6614383904054025570" HTS="8142426782080434946"/><Costs TotalCosts="1280.83" BubbleCost="1280.83" BubblePartitions="399"/></OpInfo>
+                      <PhyOp Id="PhyOp_Filter">
+                        <OpInfo><TableGroupProperties Grp="3.1" Remotable="False" Card="2.07919e+07" AvgRowLength="8" PrtnSkewFactor="1" HT="6614383904054025570:35::1:8890273996212525223" HTS="13146322671708236927"/><Costs TotalCosts="1280.83" BubbleCost="1280.83" BubblePartitions="399"/></OpInfo>
+                        <PhyOp Id="PhyOp_Spool" Name="__SCOPE_PARAMETER_PREFIX__input" CSRoot="Common" TotalConsumers="4">
+                          <OpInfo><TableGroupProperties Grp="1.1" Remotable="False" Card="2.59899e+07" AvgRowLength="24" PrtnSkewFactor="1" HT="17292284764726079925:166::1:17731584567943416972" HTS="15344537853492724826"/><Costs TotalCosts="1273.56" BubbleCost="1273.56" BubblePartitions="399"/></OpInfo>
+                          <PhyOp Id="PhyOp_Extract" Table="/taxi_february_speeds.txt" XMode="Serial" Udf="TxtExtractor">
+                            <OpInfo><TableGroupProperties Grp="0.1" Remotable="False" Card="2.59899e+07" AvgRowLength="24" PrtnSkewFactor="1" HT="17731584567943416972:115::0:0" HTS="7305700756285131088"/><Costs TotalCosts="1273.56" BubbleCost="1273.56" BubblePartitions="399"/></OpInfo>
+                          </PhyOp>
+                        </PhyOp>
+                        <ScaOp Id="ScaOp_Udf" Udf="Speed.HasValue" UsedColumn="Speed"><OpInfo><ScalarGroupProperties Grp="2.0"/></OpInfo>
+                        </ScaOp>
+                      </PhyOp>
+                    </PhyOp>
+                    <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="7.0"/></OpInfo>
+                      <AncOp Id="AncOp_PrjEl" Column="SpeedPartition"><OpInfo><ScalarGroupProperties Grp="6.0"/></OpInfo>
+                        <ScaOp Id="ScaOp_Udf" Udf="(int)(Speed / 10) * 10" UsedColumn="Speed"><OpInfo><ScalarGroupProperties Grp="5.0"/></OpInfo>
+                        </ScaOp>
+                      </AncOp>
+                    </AncOp>
+                  </PhyOp>
+                  <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="90.0"/></OpInfo>
+                    <AncOp Id="AncOp_PrjEl" Column="partialagg6__"><OpInfo><ScalarGroupProperties Grp="89.0"/></OpInfo>
+                      <ScaOp Id="ScaOp_AggFunc" AggregateName="stopCountBig" Distinct="False"><OpInfo><ScalarGroupProperties Grp="10.0"/></OpInfo>
+                        <ScaOp Id="ScaOp_Const" TI="Int" Value="1" Parameter="0"><OpInfo><ScalarGroupProperties Grp="9.0"/></OpInfo>
+                        </ScaOp>
+                      </ScaOp>
+                    </AncOp>
+                  </AncOp>
+                </PhyOp>
+              </PhyOp>
+              <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="95.0"/></OpInfo>
+                <AncOp Id="AncOp_PrjEl" Column="PointCount"><OpInfo><ScalarGroupProperties Grp="94.0"/></OpInfo>
+                  <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAccumUnchecked" Distinct="False"><OpInfo><ScalarGroupProperties Grp="93.0"/></OpInfo>
+                    <ScaOp Id="ScaOp_Identifier" Column="partialagg6__"><OpInfo><ScalarGroupProperties Grp="92.0"/></OpInfo>
+                    </ScaOp>
+                  </ScaOp>
+                </AncOp>
+              </AncOp>
+            </PhyOp>
+            <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="17.0"/></OpInfo>
+              <AncOp Id="AncOp_PrjEl" Column="PointCount1"><OpInfo><ScalarGroupProperties Grp="16.0"/></OpInfo>
+                <ScaOp Id="ScaOp_Convert"><OpInfo><ScalarGroupProperties Grp="15.0"/></OpInfo>
+                  <ScaOp Id="ScaOp_Identifier" Column="PointCount"><OpInfo><ScalarGroupProperties Grp="14.0"/></OpInfo>
+                  </ScaOp>
+                </ScaOp>
+              </AncOp>
+            </AncOp>
+          </PhyOp>
+        </PhyOp>
+      </PhyOp>
+      <PhyOp Id="PhyOp_Output" Table="/outputSpeed.csv" XMode="Serial" Out="TaxiID,Average" Udf="IOutputter">
+        <OpInfo><TableGroupProperties Grp="87.1" Remotable="False" Card="5.19798e+06" AvgRowLength="12" PrtnSkewFactor="1" HT="18122273705431950450:228::4:8123841217540460422" HTS="4513282995561217275"/><Costs TotalCosts="1932.59" BubbleCost="1932.59" BubblePartitions="399"/></OpInfo>
+        <PhyOp Id="PhyOp_ComputeScalar">
+          <OpInfo><TableGroupProperties Grp="86.1" Remotable="False" Card="5.19798e+06" AvgRowLength="12" PrtnSkewFactor="1" HT="8123841217540460422:212::3:18255671043169235046" HTS="18166161886733979359"/><Costs TotalCosts="1309.92" BubbleCost="1309.92" BubblePartitions="399"/></OpInfo>
+          <PhyOp Id="PhyOp_StreamGbAgg" AggregateType="Global" GroupOnly="False" On="TaxiID ASC" SortColumn="TaxiID ASC">
+            <OpInfo><TableGroupProperties Grp="82.2" Remotable="False" Card="5.19798e+06" AvgRowLength="20" PrtnSkewFactor="1" HT="16225465968121125040:109:0:4:595578683887542204" HTS="1092109869206030502"/><Costs TotalCosts="1309.4" BubbleCost="1309.4" BubblePartitions="399"/></OpInfo>
+            <PhyOp Id="PhyOp_Sort" SortColumn="TaxiID ASC">
+              <OpInfo><TableGroupProperties Grp="129.2" Remotable="False" Card="1.0396e+07" AvgRowLength="20" PrtnSkewFactor="1" HT="907667404886050531:109:1:4:2167956322701325078" HTS="11157877046780430797"/><Costs TotalCosts="1305.39" BubbleCost="1305.39" BubblePartitions="399"/></OpInfo>
+              <PhyOp Id="PhyOp_HashGbAgg" AggregateType="Local" By="TaxiID">
+                <OpInfo><TableGroupProperties Grp="129.3" Remotable="False" Card="1.0396e+07" AvgRowLength="20" PrtnSkewFactor="1" HT="907667404886050531:109:1:4:2167956322701325078" HTS="11157877046780430797"/><Costs TotalCosts="1289.25" BubbleCost="1289.25" BubblePartitions="399"/></OpInfo>
+                <PhyOp Id="PhyOp_RestrRemap">
+                  <OpInfo><TableGroupProperties Grp="75.3" Remotable="False" Card="2.07919e+07" AvgRowLength="12" PrtnSkewFactor="1" HT="8303944152629342479:120::2:8923802552460654959" HTS="10138450565255688805"/><Costs TotalCosts="1280.83" BubbleCost="1280.83" BubblePartitions="399"/></OpInfo>
+                  <PhyOp Id="PhyOp_Filter">
+                    <OpInfo><TableGroupProperties Grp="74.3" Remotable="False" Card="2.07919e+07" AvgRowLength="12" PrtnSkewFactor="1" HT="8923802552460654959:35::1:18239890856766565522" HTS="9612915054125109658"/><Costs TotalCosts="1280.83" BubbleCost="1280.83" BubblePartitions="399"/></OpInfo>
+                    <PhyOp Id="PhyOp_Spool" Name="__SCOPE_PARAMETER_PREFIX__input" CSRoot="Common" TotalConsumers="4">
+                      <OpInfo><TableGroupProperties Grp="1.1" Remotable="False" Card="2.59899e+07" AvgRowLength="24" PrtnSkewFactor="1" HT="17292284764726079925:166::1:17731584567943416972" HTS="15344537853492724826"/><Costs TotalCosts="1273.56" BubbleCost="1273.56" BubblePartitions="399"/></OpInfo>
+                    </PhyOp>
+                    <ScaOp Id="ScaOp_Udf" Udf="Speed.HasValue &amp;&amp; Speed &gt;= 10" UsedColumn="Speed"><OpInfo><ScalarGroupProperties Grp="73.0"/></OpInfo>
+                    </ScaOp>
+                  </PhyOp>
+                </PhyOp>
+                <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="128.0"/></OpInfo>
+                  <AncOp Id="AncOp_PrjEl" Column="partialaggD__"><OpInfo><ScalarGroupProperties Grp="126.0"/></OpInfo>
+                    <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAccum" Distinct="False"><OpInfo><ScalarGroupProperties Grp="77.0"/></OpInfo>
+                      <ScaOp Id="ScaOp_Identifier" Column="Speed"><OpInfo><ScalarGroupProperties Grp="76.0"/></OpInfo>
+                      </ScaOp>
+                    </ScaOp>
+                  </AncOp>
+                  <AncOp Id="AncOp_PrjEl" Column="partialaggE__"><OpInfo><ScalarGroupProperties Grp="127.0"/></OpInfo>
+                    <ScaOp Id="ScaOp_AggFunc" AggregateName="stopCountBig" Distinct="False"><OpInfo><ScalarGroupProperties Grp="79.0"/></OpInfo>
+                      <ScaOp Id="ScaOp_Identifier" Column="Speed"><OpInfo><ScalarGroupProperties Grp="76.0"/></OpInfo>
+                      </ScaOp>
+                    </ScaOp>
+                  </AncOp>
+                </AncOp>
+              </PhyOp>
+            </PhyOp>
+            <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="136.0"/></OpInfo>
+              <AncOp Id="AncOp_PrjEl" Column="Expr4"><OpInfo><ScalarGroupProperties Grp="132.0"/></OpInfo>
+                <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAccum" Distinct="False"><OpInfo><ScalarGroupProperties Grp="131.0"/></OpInfo>
+                  <ScaOp Id="ScaOp_Identifier" Column="partialaggD__"><OpInfo><ScalarGroupProperties Grp="130.0"/></OpInfo>
+                  </ScaOp>
+                </ScaOp>
+              </AncOp>
+              <AncOp Id="AncOp_PrjEl" Column="Expr5"><OpInfo><ScalarGroupProperties Grp="135.0"/></OpInfo>
+                <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAccumUnchecked" Distinct="False"><OpInfo><ScalarGroupProperties Grp="134.0"/></OpInfo>
+                  <ScaOp Id="ScaOp_Identifier" Column="partialaggE__"><OpInfo><ScalarGroupProperties Grp="133.0"/></OpInfo>
+                  </ScaOp>
+                </ScaOp>
+              </AncOp>
+            </AncOp>
+          </PhyOp>
+          <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="85.0"/></OpInfo>
+            <AncOp Id="AncOp_PrjEl" Column="Average"><OpInfo><ScalarGroupProperties Grp="84.0"/></OpInfo>
+              <ScaOp Id="ScaOp_Udf" Udf="Expr5 == 0 ? (double?)null : Expr4 / Expr5" UsedColumn="Expr4,Expr5"><OpInfo><ScalarGroupProperties Grp="83.0"/></OpInfo>
+              </ScaOp>
+            </AncOp>
+          </AncOp>
+        </PhyOp>
+      </PhyOp>
+      <PhyOp Id="PhyOp_Output" Table="/outputHours.csv" XMode="Serial" Out="Hour,HourCount,AvgSpeed" Udf="IOutputter">
+        <OpInfo><TableGroupProperties Grp="46.1" Remotable="False" Card="5.19798e+06" AvgRowLength="20" PrtnSkewFactor="1" HT="3886011746539898108:228::6:4698080995554749163" HTS="12886701606473325630"/><Costs TotalCosts="2282.83" BubbleCost="2282.83" BubblePartitions="399"/></OpInfo>
+        <PhyOp Id="PhyOp_RestrRemap">
+          <OpInfo><TableGroupProperties Grp="45.1" Remotable="False" Card="5.19798e+06" AvgRowLength="20" PrtnSkewFactor="1" HT="4698080995554749163:120::5:7796216395694202411" HTS="15677538208472025152"/><Costs TotalCosts="1317.13" BubbleCost="1317.13" BubblePartitions="399"/></OpInfo>
+          <PhyOp Id="PhyOp_ComputeScalar">
+            <OpInfo><TableGroupProperties Grp="44.1" Remotable="False" Card="5.19798e+06" AvgRowLength="20" PrtnSkewFactor="1" HT="7796216395694202411:212::4:15185713905348735453" HTS="8063627762546076571"/><Costs TotalCosts="1317.13" BubbleCost="1317.13" BubblePartitions="399"/></OpInfo>
+            <PhyOp Id="PhyOp_ComputeScalar">
+              <OpInfo><TableGroupProperties Grp="39.1" Remotable="False" Card="5.19798e+06" AvgRowLength="20" PrtnSkewFactor="1" HT="3823430758810869665:212::3:11328562592382283443" HTS="8704193257038798495"/><Costs TotalCosts="1316.61" BubbleCost="1316.61" BubblePartitions="399"/></OpInfo>
+              <PhyOp Id="PhyOp_StreamGbAgg" AggregateType="Global" GroupOnly="False" On="Expr_0 ASC" SortColumn="Expr_0 ASC">
+                <OpInfo><TableGroupProperties Grp="35.2" Remotable="False" Card="5.19798e+06" AvgRowLength="28" PrtnSkewFactor="1" HT="716359604816534237:109:0:4:14556563157814795556" HTS="6301423435216663877"/><Costs TotalCosts="1316.09" BubbleCost="1316.09" BubblePartitions="399"/></OpInfo>
+                <PhyOp Id="PhyOp_Sort" SortColumn="Expr_0 ASC">
+                  <OpInfo><TableGroupProperties Grp="100.2" Remotable="False" Card="1.0396e+07" AvgRowLength="28" PrtnSkewFactor="1" HT="17271321936621736307:109:1:4:8746204539685661609" HTS="12462099565590369765"/><Costs TotalCosts="1311" BubbleCost="1311" BubblePartitions="399"/></OpInfo>
+                  <PhyOp Id="PhyOp_HashGbAgg" AggregateType="Local" By="Expr_0">
+                    <OpInfo><TableGroupProperties Grp="100.3" Remotable="False" Card="1.0396e+07" AvgRowLength="28" PrtnSkewFactor="1" HT="17271321936621736307:109:1:4:8746204539685661609" HTS="12462099565590369765"/><Costs TotalCosts="1294.75" BubbleCost="1294.75" BubblePartitions="399"/></OpInfo>
+                    <PhyOp Id="PhyOp_ComputeScalar">
+                      <OpInfo><TableGroupProperties Grp="27.3" Remotable="False" Card="2.07919e+07" AvgRowLength="12" PrtnSkewFactor="1" HT="15593492685349239979:212::3:5340508131123666656" HTS="3795405128645364680"/><Costs TotalCosts="1282.91" BubbleCost="1282.91" BubblePartitions="399"/></OpInfo>
+                      <PhyOp Id="PhyOp_RestrRemap">
+                        <OpInfo><TableGroupProperties Grp="23.1" Remotable="False" Card="2.07919e+07" AvgRowLength="16" PrtnSkewFactor="1" HT="4009981833231462693:120::2:6257847198856462639" HTS="4467572847523331277"/><Costs TotalCosts="1280.83" BubbleCost="1280.83" BubblePartitions="399"/></OpInfo>
+                        <PhyOp Id="PhyOp_Filter">
+                          <OpInfo><TableGroupProperties Grp="22.1" Remotable="False" Card="2.07919e+07" AvgRowLength="16" PrtnSkewFactor="1" HT="6257847198856462639:35::1:16037675404753438785" HTS="15365036899641644529"/><Costs TotalCosts="1280.83" BubbleCost="1280.83" BubblePartitions="399"/></OpInfo>
+                          <PhyOp Id="PhyOp_Spool" Name="__SCOPE_PARAMETER_PREFIX__input" CSRoot="Common" TotalConsumers="4">
+                            <OpInfo><TableGroupProperties Grp="1.1" Remotable="False" Card="2.59899e+07" AvgRowLength="24" PrtnSkewFactor="1" HT="17292284764726079925:166::1:17731584567943416972" HTS="15344537853492724826"/><Costs TotalCosts="1273.56" BubbleCost="1273.56" BubblePartitions="399"/></OpInfo>
+                          </PhyOp>
+                          <ScaOp Id="ScaOp_Udf" Udf="Staying.HasValue &amp;&amp; Staying &lt; 4" UsedColumn="Staying"><OpInfo><ScalarGroupProperties Grp="21.0"/></OpInfo>
+                          </ScaOp>
+                        </PhyOp>
+                      </PhyOp>
+                      <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="26.0"/></OpInfo>
+                        <AncOp Id="AncOp_PrjEl" Column="Expr_0"><OpInfo><ScalarGroupProperties Grp="25.0"/></OpInfo>
+                          <ScaOp Id="ScaOp_Udf" Udf="Timestamp.Hour" UsedColumn="Timestamp"><OpInfo><ScalarGroupProperties Grp="24.0"/></OpInfo>
+                          </ScaOp>
+                        </AncOp>
+                      </AncOp>
+                    </PhyOp>
+                    <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="99.0"/></OpInfo>
+                      <AncOp Id="AncOp_PrjEl" Column="partialagg7__"><OpInfo><ScalarGroupProperties Grp="96.0"/></OpInfo>
+                        <ScaOp Id="ScaOp_AggFunc" AggregateName="stopCountBig" Distinct="False"><OpInfo><ScalarGroupProperties Grp="10.0"/></OpInfo>
+                          <ScaOp Id="ScaOp_Const" TI="Int" Value="1" Parameter="0"><OpInfo><ScalarGroupProperties Grp="9.0"/></OpInfo>
+                          </ScaOp>
+                        </ScaOp>
+                      </AncOp>
+                      <AncOp Id="AncOp_PrjEl" Column="partialagg8__"><OpInfo><ScalarGroupProperties Grp="97.0"/></OpInfo>
+                        <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAccum" Distinct="False"><OpInfo><ScalarGroupProperties Grp="30.0"/></OpInfo>
+                          <ScaOp Id="ScaOp_Identifier" Column="Speed"><OpInfo><ScalarGroupProperties Grp="29.0"/></OpInfo>
+                          </ScaOp>
+                        </ScaOp>
+                      </AncOp>
+                      <AncOp Id="AncOp_PrjEl" Column="partialagg9__"><OpInfo><ScalarGroupProperties Grp="98.0"/></OpInfo>
+                        <ScaOp Id="ScaOp_AggFunc" AggregateName="stopCountBig" Distinct="False"><OpInfo><ScalarGroupProperties Grp="32.0"/></OpInfo>
+                          <ScaOp Id="ScaOp_Identifier" Column="Speed"><OpInfo><ScalarGroupProperties Grp="29.0"/></OpInfo>
+                          </ScaOp>
+                        </ScaOp>
+                      </AncOp>
+                    </AncOp>
+                  </PhyOp>
+                </PhyOp>
+                <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="110.0"/></OpInfo>
+                  <AncOp Id="AncOp_PrjEl" Column="HourCount"><OpInfo><ScalarGroupProperties Grp="103.0"/></OpInfo>
+                    <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAccumUnchecked" Distinct="False"><OpInfo><ScalarGroupProperties Grp="102.0"/></OpInfo>
+                      <ScaOp Id="ScaOp_Identifier" Column="partialagg7__"><OpInfo><ScalarGroupProperties Grp="101.0"/></OpInfo>
+                      </ScaOp>
+                    </ScaOp>
+                  </AncOp>
+                  <AncOp Id="AncOp_PrjEl" Column="Expr0"><OpInfo><ScalarGroupProperties Grp="106.0"/></OpInfo>
+                    <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAccum" Distinct="False"><OpInfo><ScalarGroupProperties Grp="105.0"/></OpInfo>
+                      <ScaOp Id="ScaOp_Identifier" Column="partialagg8__"><OpInfo><ScalarGroupProperties Grp="104.0"/></OpInfo>
+                      </ScaOp>
+                    </ScaOp>
+                  </AncOp>
+                  <AncOp Id="AncOp_PrjEl" Column="Expr1"><OpInfo><ScalarGroupProperties Grp="109.0"/></OpInfo>
+                    <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAccumUnchecked" Distinct="False"><OpInfo><ScalarGroupProperties Grp="108.0"/></OpInfo>
+                      <ScaOp Id="ScaOp_Identifier" Column="partialagg9__"><OpInfo><ScalarGroupProperties Grp="107.0"/></OpInfo>
+                      </ScaOp>
+                    </ScaOp>
+                  </AncOp>
+                </AncOp>
+              </PhyOp>
+              <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="38.0"/></OpInfo>
+                <AncOp Id="AncOp_PrjEl" Column="AvgSpeed"><OpInfo><ScalarGroupProperties Grp="37.0"/></OpInfo>
+                  <ScaOp Id="ScaOp_Udf" Udf="Expr1 == 0 ? (double?)null : Expr0 / Expr1" UsedColumn="Expr0,Expr1"><OpInfo><ScalarGroupProperties Grp="36.0"/></OpInfo>
+                  </ScaOp>
+                </AncOp>
+              </AncOp>
+            </PhyOp>
+            <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="43.0"/></OpInfo>
+              <AncOp Id="AncOp_PrjEl" Column="HourCount1"><OpInfo><ScalarGroupProperties Grp="42.0"/></OpInfo>
+                <ScaOp Id="ScaOp_Convert"><OpInfo><ScalarGroupProperties Grp="41.0"/></OpInfo>
+                  <ScaOp Id="ScaOp_Identifier" Column="HourCount"><OpInfo><ScalarGroupProperties Grp="40.0"/></OpInfo>
+                  </ScaOp>
+                </ScaOp>
+              </AncOp>
+            </AncOp>
+          </PhyOp>
+        </PhyOp>
+      </PhyOp>
+      <PhyOp Id="PhyOp_Output" Table="/outputHoursStops.csv" XMode="Serial" Out="Hour,HourCount,AvgSpeed" Udf="IOutputter">
+        <OpInfo><TableGroupProperties Grp="72.1" Remotable="False" Card="5.19798e+06" AvgRowLength="20" PrtnSkewFactor="1" HT="6200556153168876425:228::6:1562019720824174416" HTS="11896111841143679330"/><Costs TotalCosts="2282.83" BubbleCost="2282.83" BubblePartitions="399"/></OpInfo>
+        <PhyOp Id="PhyOp_RestrRemap">
+          <OpInfo><TableGroupProperties Grp="71.1" Remotable="False" Card="5.19798e+06" AvgRowLength="20" PrtnSkewFactor="1" HT="1562019720824174416:120::5:4857022559768119869" HTS="17844849135883365143"/><Costs TotalCosts="1317.13" BubbleCost="1317.13" BubblePartitions="399"/></OpInfo>
+          <PhyOp Id="PhyOp_ComputeScalar">
+            <OpInfo><TableGroupProperties Grp="70.1" Remotable="False" Card="5.19798e+06" AvgRowLength="20" PrtnSkewFactor="1" HT="4857022559768119869:212::4:3220152212397473278" HTS="13771256644543127869"/><Costs TotalCosts="1317.13" BubbleCost="1317.13" BubblePartitions="399"/></OpInfo>
+            <PhyOp Id="PhyOp_ComputeScalar">
+              <OpInfo><TableGroupProperties Grp="65.1" Remotable="False" Card="5.19798e+06" AvgRowLength="20" PrtnSkewFactor="1" HT="10304613139569159106:212::3:11123906774429213268" HTS="10790255772090528632"/><Costs TotalCosts="1316.61" BubbleCost="1316.61" BubblePartitions="399"/></OpInfo>
+              <PhyOp Id="PhyOp_StreamGbAgg" AggregateType="Global" GroupOnly="False" On="Expr_0 ASC" SortColumn="Expr_0 ASC">
+                <OpInfo><TableGroupProperties Grp="61.2" Remotable="False" Card="5.19798e+06" AvgRowLength="28" PrtnSkewFactor="1" HT="15841414456796473966:109:0:4:10440303625550453238" HTS="3460906351693620760"/><Costs TotalCosts="1316.09" BubbleCost="1316.09" BubblePartitions="399"/></OpInfo>
+                <PhyOp Id="PhyOp_Sort" SortColumn="Expr_0 ASC">
+                  <OpInfo><TableGroupProperties Grp="115.2" Remotable="False" Card="1.0396e+07" AvgRowLength="28" PrtnSkewFactor="1" HT="9400083661566800431:109:1:4:4629945007421319291" HTS="5107072885826378114"/><Costs TotalCosts="1311" BubbleCost="1311" BubblePartitions="399"/></OpInfo>
+                  <PhyOp Id="PhyOp_HashGbAgg" AggregateType="Local" By="Expr_0">
+                    <OpInfo><TableGroupProperties Grp="115.3" Remotable="False" Card="1.0396e+07" AvgRowLength="28" PrtnSkewFactor="1" HT="9400083661566800431:109:1:4:4629945007421319291" HTS="5107072885826378114"/><Costs TotalCosts="1294.75" BubbleCost="1294.75" BubblePartitions="399"/></OpInfo>
+                    <PhyOp Id="PhyOp_ComputeScalar">
+                      <OpInfo><TableGroupProperties Grp="53.3" Remotable="False" Card="2.07919e+07" AvgRowLength="12" PrtnSkewFactor="1" HT="11477233153084897661:212::3:5079695729560155615" HTS="15940541457552966586"/><Costs TotalCosts="1282.91" BubbleCost="1282.91" BubblePartitions="399"/></OpInfo>
+                      <PhyOp Id="PhyOp_RestrRemap">
+                        <OpInfo><TableGroupProperties Grp="49.1" Remotable="False" Card="2.07919e+07" AvgRowLength="16" PrtnSkewFactor="1" HT="3749169431667951652:120::2:10620473360738380859" HTS="1282946953995368252"/><Costs TotalCosts="1280.83" BubbleCost="1280.83" BubblePartitions="399"/></OpInfo>
+                        <PhyOp Id="PhyOp_Filter">
+                          <OpInfo><TableGroupProperties Grp="48.1" Remotable="False" Card="2.07919e+07" AvgRowLength="16" PrtnSkewFactor="1" HT="10620473360738380859:35::1:5059750626430497978" HTS="6044330405990492938"/><Costs TotalCosts="1280.83" BubbleCost="1280.83" BubblePartitions="399"/></OpInfo>
+                          <PhyOp Id="PhyOp_Spool" Name="__SCOPE_PARAMETER_PREFIX__input" CSRoot="Common" TotalConsumers="4">
+                            <OpInfo><TableGroupProperties Grp="1.1" Remotable="False" Card="2.59899e+07" AvgRowLength="24" PrtnSkewFactor="1" HT="17292284764726079925:166::1:17731584567943416972" HTS="15344537853492724826"/><Costs TotalCosts="1273.56" BubbleCost="1273.56" BubblePartitions="399"/></OpInfo>
+                          </PhyOp>
+                          <ScaOp Id="ScaOp_Udf" Udf="Staying.HasValue &amp;&amp; Staying &gt;= 4" UsedColumn="Staying"><OpInfo><ScalarGroupProperties Grp="47.0"/></OpInfo>
+                          </ScaOp>
+                        </PhyOp>
+                      </PhyOp>
+                      <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="52.0"/></OpInfo>
+                        <AncOp Id="AncOp_PrjEl" Column="Expr_0"><OpInfo><ScalarGroupProperties Grp="51.0"/></OpInfo>
+                          <ScaOp Id="ScaOp_Udf" Udf="Timestamp.Hour" UsedColumn="Timestamp"><OpInfo><ScalarGroupProperties Grp="50.0"/></OpInfo>
+                          </ScaOp>
+                        </AncOp>
+                      </AncOp>
+                    </PhyOp>
+                    <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="114.0"/></OpInfo>
+                      <AncOp Id="AncOp_PrjEl" Column="partialaggA__"><OpInfo><ScalarGroupProperties Grp="111.0"/></OpInfo>
+                        <ScaOp Id="ScaOp_AggFunc" AggregateName="stopCountBig" Distinct="False"><OpInfo><ScalarGroupProperties Grp="10.0"/></OpInfo>
+                          <ScaOp Id="ScaOp_Const" TI="Int" Value="1" Parameter="0"><OpInfo><ScalarGroupProperties Grp="9.0"/></OpInfo>
+                          </ScaOp>
+                        </ScaOp>
+                      </AncOp>
+                      <AncOp Id="AncOp_PrjEl" Column="partialaggB__"><OpInfo><ScalarGroupProperties Grp="112.0"/></OpInfo>
+                        <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAccum" Distinct="False"><OpInfo><ScalarGroupProperties Grp="56.0"/></OpInfo>
+                          <ScaOp Id="ScaOp_Identifier" Column="Speed"><OpInfo><ScalarGroupProperties Grp="55.0"/></OpInfo>
+                          </ScaOp>
+                        </ScaOp>
+                      </AncOp>
+                      <AncOp Id="AncOp_PrjEl" Column="partialaggC__"><OpInfo><ScalarGroupProperties Grp="113.0"/></OpInfo>
+                        <ScaOp Id="ScaOp_AggFunc" AggregateName="stopCountBig" Distinct="False"><OpInfo><ScalarGroupProperties Grp="58.0"/></OpInfo>
+                          <ScaOp Id="ScaOp_Identifier" Column="Speed"><OpInfo><ScalarGroupProperties Grp="55.0"/></OpInfo>
+                          </ScaOp>
+                        </ScaOp>
+                      </AncOp>
+                    </AncOp>
+                  </PhyOp>
+                </PhyOp>
+                <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="125.0"/></OpInfo>
+                  <AncOp Id="AncOp_PrjEl" Column="HourCount"><OpInfo><ScalarGroupProperties Grp="118.0"/></OpInfo>
+                    <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAccumUnchecked" Distinct="False"><OpInfo><ScalarGroupProperties Grp="117.0"/></OpInfo>
+                      <ScaOp Id="ScaOp_Identifier" Column="partialaggA__"><OpInfo><ScalarGroupProperties Grp="116.0"/></OpInfo>
+                      </ScaOp>
+                    </ScaOp>
+                  </AncOp>
+                  <AncOp Id="AncOp_PrjEl" Column="Expr2"><OpInfo><ScalarGroupProperties Grp="121.0"/></OpInfo>
+                    <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAccum" Distinct="False"><OpInfo><ScalarGroupProperties Grp="120.0"/></OpInfo>
+                      <ScaOp Id="ScaOp_Identifier" Column="partialaggB__"><OpInfo><ScalarGroupProperties Grp="119.0"/></OpInfo>
+                      </ScaOp>
+                    </ScaOp>
+                  </AncOp>
+                  <AncOp Id="AncOp_PrjEl" Column="Expr3"><OpInfo><ScalarGroupProperties Grp="124.0"/></OpInfo>
+                    <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAccumUnchecked" Distinct="False"><OpInfo><ScalarGroupProperties Grp="123.0"/></OpInfo>
+                      <ScaOp Id="ScaOp_Identifier" Column="partialaggC__"><OpInfo><ScalarGroupProperties Grp="122.0"/></OpInfo>
+                      </ScaOp>
+                    </ScaOp>
+                  </AncOp>
+                </AncOp>
+              </PhyOp>
+              <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="64.0"/></OpInfo>
+                <AncOp Id="AncOp_PrjEl" Column="AvgSpeed"><OpInfo><ScalarGroupProperties Grp="63.0"/></OpInfo>
+                  <ScaOp Id="ScaOp_Udf" Udf="Expr3 == 0 ? (double?)null : Expr2 / Expr3" UsedColumn="Expr2,Expr3"><OpInfo><ScalarGroupProperties Grp="62.0"/></OpInfo>
+                  </ScaOp>
+                </AncOp>
+              </AncOp>
+            </PhyOp>
+            <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="69.0"/></OpInfo>
+              <AncOp Id="AncOp_PrjEl" Column="HourCount1"><OpInfo><ScalarGroupProperties Grp="68.0"/></OpInfo>
+                <ScaOp Id="ScaOp_Convert"><OpInfo><ScalarGroupProperties Grp="67.0"/></OpInfo>
+                  <ScaOp Id="ScaOp_Identifier" Column="HourCount"><OpInfo><ScalarGroupProperties Grp="66.0"/></OpInfo>
+                  </ScaOp>
+                </ScaOp>
+              </AncOp>
+            </AncOp>
+          </PhyOp>
+        </PhyOp>
+      </PhyOp>
+    </PhyOp>
+</OutputTree>
+</OptimizerTrees>
+  </OptimizerPlanInfo>
+  <ScopeCounters>
+    <Counter Name="ResourcesDownloading" Value="0,0008728" Unit="second" Intervals="1" />
+    <Counter Name="Overall" Value="12,752021" Unit="second" Intervals="0" />
+    <Counter Name="FrontEndRun" Value="1,6741333" Unit="second" Intervals="1" />
+    <Counter Name="AstBuilder" Value="0,8316688" Unit="second" Intervals="1" />
+    <Counter Name="SyntaxVerifier" Value="0,1088318" Unit="second" Intervals="1" />
+    <Counter Name="DdlResolver" Value="0,5708532" Unit="second" Intervals="1" />
+    <Counter Name="RoslynStartup" Value="0,3440819" Unit="second" Intervals="2" />
+    <Counter Name="SMS" Value="0,0389321" Unit="second" Intervals="3" />
+    <Counter Name="ReferenceLoading" Value="0,0020121" Unit="second" Intervals="1" />
+    <Counter Name="ResourceReferencePass" Value="0,009478" Unit="second" Intervals="1" />
+    <Counter Name="InputOutputPass" Value="0,0441181" Unit="second" Intervals="1" />
+    <Counter Name="SStreamMetadataWait" Value="3,91E-05" Unit="second" Intervals="2" />
+    <Counter Name="SStreamMetadataAsync" Value="0" Unit="second" Intervals="0" />
+    <Counter Name="ScopeBinderPass" Value="0,611652" Unit="second" Intervals="1" />
+    <Counter Name="ExpressionBinding" Value="0,5110526" Unit="second" Intervals="14" />
+    <Counter Name="OneColumnBinding" Value="0,0036268" Unit="second" Intervals="4" />
+    <Counter Name="QualifiedColumnBinding" Value="0" Unit="second" Intervals="0" />
+    <Counter Name="SimpleAggregateBinding" Value="0,0046312" Unit="second" Intervals="3" />
+    <Counter Name="RoslynFirstCall" Value="0,1119053" Unit="second" Intervals="1" />
+    <Counter Name="UserCode" Value="0,00239" Unit="second" Intervals="1" />
+    <Counter Name="RoslynBinding" Value="0,3775449" Unit="second" Intervals="11" />
+    <Counter Name="RoslynParsing" Value="0,0100285" Unit="second" Intervals="11" />
+    <Counter Name="RoslynPreSemantic" Value="0,0228013" Unit="second" Intervals="11" />
+    <Counter Name="RoslynSemantic" Value="0,1374862" Unit="second" Intervals="11" />
+    <Counter Name="RoslynPostSemantic" Value="0,2065671" Unit="second" Intervals="11" />
+    <Counter Name="SemanticAnalyzerPass" Value="0,0841713" Unit="second" Intervals="1" />
+    <Counter Name="ErrorReporterPass" Value="0,0430656" Unit="second" Intervals="1" />
+    <Counter Name="GenerateOptTreePass" Value="0,0806303" Unit="second" Intervals="1" />
+    <Counter Name="Optimizer" Value="0,4433013" Unit="second" Intervals="1" />
+    <Counter Name="CodeGeneration" Value="0,6710323" Unit="second" Intervals="1" />
+    <Counter Name="AlgebraAndManagedCodeGen" Value="0,1868057" Unit="second" Intervals="1" />
+    <Counter Name="ComputeSignature" Value="1,63E-05" Unit="second" Intervals="1" />
+    <Counter Name="PostProcessExecutionPlan" Value="0,0049895" Unit="second" Intervals="1" />
+    <Counter Name="CreateSplitersOrSpools" Value="0,0525889" Unit="second" Intervals="1" />
+    <Counter Name="ReplaceFusionPipelinesWithAdapters" Value="4,1E-06" Unit="second" Intervals="1" />
+    <Counter Name="CreateWhereSelectEnumerators" Value="0,0146458" Unit="second" Intervals="1" />
+    <Counter Name="ComputePayloadMetadata" Value="0,0003321" Unit="second" Intervals="1" />
+    <Counter Name="SStreamStageProcessing" Value="0,0025052" Unit="second" Intervals="1" />
+    <Counter Name="ValidateStages" Value="0,0024945" Unit="second" Intervals="1" />
+    <Counter Name="CompileToAlgebra" Value="0,0444633" Unit="second" Intervals="1" />
+    <Counter Name="CreateCppReadyStage" Value="0,00439" Unit="second" Intervals="1" />
+    <Counter Name="AdornAllWithMemoryModel" Value="0,0270971" Unit="second" Intervals="1" />
+    <Counter Name="SplitScopeVertices" Value="0,0296892" Unit="second" Intervals="1" />
+    <Counter Name="EstimateMemorySize" Value="0,0006624" Unit="second" Intervals="1" />
+    <Counter Name="CalculateBubbles" Value="0,0001964" Unit="second" Intervals="1" />
+    <Counter Name="ManagedCodeEmission" Value="0,0280241" Unit="second" Intervals="1" />
+    <Counter Name="NativeCodeGeneration" Value="0,4560675" Unit="second" Intervals="1" />
+    <Counter Name="CodeCompiling" Value="9,5856782" Unit="second" Intervals="1" />
+    <Counter Name="EmitCompilationResult" Value="0,2247871" Unit="second" Intervals="1" />
+    <Counter Name="ASTSerialization" Value="0,0601701" Unit="second" Intervals="1" />
+    <Counter Name="CQO - Init" Value="0,0104787932849134" Unit="second" />
+    <Counter Name="CQO - CopyIn" Value="0,12163956422104" Unit="second" />
+    <Counter Name="CQO - Search - Init" Value="6,0182731568222E-05" Unit="second" />
+    <Counter Name="CQO - Search - NNF" Value="0,000110101741473647" Unit="second" />
+    <Counter Name="CQO - Search - PreOptimization" Value="0,000451603753163092" Unit="second" />
+    <Counter Name="CQO - Search - Simplification" Value="0,0303577560145409" Unit="second" />
+    <Counter Name="CQO - Search - Join Reordering" Value="0,00390674569110303" Unit="second" />
+    <Counter Name="CQO - Search - Expression Sharing" Value="0,000439940433091732" Unit="second" />
+    <Counter Name="CQO - Search - Optimization" Value="0,00769172632066106" Unit="second" />
+    <Counter Name="CQO - Search - Subtotal" Value="0,0543622683198101" Unit="second" />
+    <Counter Name="CQO - Showplan" Value="0,00568890099800697" Unit="second" />
+    <Counter Name="CQO - Stage Generation" Value="0,224924328379377" Unit="second" />
+    <Counter Name="CQO - PostOptimization" Value="0,00535626310957176" Unit="second" />
+    <Counter Name="Working Set" Value="136424" Unit="KB" />
+    <Counter Name="Peak Working Set" Value="153564" Unit="KB" />
+    <Counter Name="Private Memory" Value="163636" Unit="KB" />
+    <Counter Name="Virtual Memory" Value="820388" Unit="KB" />
+    <Counter Name="Total CPU" Value="42,015625" Unit="second" />
+    <Counter Name="CQO - Total" Value="0,434175487246859" Unit="second" />
+  </ScopeCounters>
+</CSSRelatedInfo>
