@@ -1,5 +1,0 @@
-c:\users\acer\documents\visual studio 2015\Projects\TaxiLocations\TaxiLocations\bin\Debug\Algebra.xml
-c:\users\acer\documents\visual studio 2015\Projects\TaxiLocations\TaxiLocations\obj\Debug\Algebra.xml
-c:\users\acer\documents\visual studio 2015\Projects\TaxiLocations\TaxiLocations\bin\Debug\TaxiDataUtilities.pdb
-c:\users\acer\documents\visual studio 2015\Projects\TaxiLocations\TaxiLocations\bin\Debug\TaxiDataUtilities.exe
-c:\users\acer\documents\visual studio 2015\Projects\TaxiLocations\TaxiLocations\obj\Debug\TaxiLocations.usqlprojResolveAssemblyReference.cache
